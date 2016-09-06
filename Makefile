@@ -36,9 +36,12 @@ do-fixups:
 	do \
 		strip $(DSTROOT)/usr/sbin/$${foo}; \
 	done
-	for foo in libnetsnmp.5.0.8.dylib libnetsnmpagent.5.0.8.dylib libnetsnmphelpers.5.0.8.dylib libnetsnmpmibs.5.0.8.dylib; \
+	for foo in libnetsnmp libnetsnmpagent libnetsnmphelpers libnetsnmpmibs; \
 	do \
-		strip -x $(DSTROOT)/usr/lib/$${foo}; \
+		strip -x $(DSTROOT)/usr/lib/$${foo}.5.0.8.dylib; \
+		rm -f $(DSTROOT)/usr/lib/$${foo}.5.dylib; \
+		mv $(DSTROOT)/usr/lib/$${foo}.5.0.8.dylib $(DSTROOT)/usr/lib/$${foo}.5.dylib; \
+		ln -s $${foo}.5.dylib $(DSTROOT)/usr/lib/$${foo}.5.0.8.dylib; \
 	done
 	find  $(DSTROOT)/usr/local/include/ucd-snmp -type f | xargs chmod 644
 	find  $(DSTROOT)/usr/share/snmp -type f| xargs chmod 644
